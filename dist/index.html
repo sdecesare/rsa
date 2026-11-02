@@ -1,0 +1,283 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Research Support Allowance — Your application</title><link rel="stylesheet" href="./styles.css"></head><body>
+<header class="topbar"><a class="brand" href="./"><span class="brand-mark">R</span><span>Research Support Allowance<small>APPLICANT WORKSPACE</small></span></a><div class="top-actions"><span id="saveStatus" role="status">Draft in memory</span><button id="openFile" class="secondary">Open application file</button><input id="resumeFile" type="file" accept=".json,application/json" hidden><button id="saveFile" class="primary">Save draft JSON ↓</button></div></header>
+<div class="layout"><aside class="sidebar"><p class="eyebrow">YOUR APPLICATION</p><h1>A little structure.<br>More time for research.</h1><nav aria-label="Application steps"><button data-go="1" class="step-link active"><b>01</b><span>Details & request<small>Your allowance and affiliation</small></span></button><button data-go="2" class="step-link"><b>02</b><span>Publications<small>Import, select, and check</small></span></button><button data-go="3" class="step-link"><b>03</b><span>Research activity<small>Pipeline, REF, and funding</small></span></button><button data-go="4" class="step-link"><b>04</b><span>Plans & contribution<small>Future work and impact</small></span></button><button data-go="5" class="step-link"><b>05</b><span>Review & save<small>Check and export your file</small></span></button></nav><div class="sidebar-note"><strong>A simple application file</strong><p>Your application stays in this browser. Download JSON to continue later, or Excel to upload through your university process.</p><p>Application contents are not sent to a server. ORCID and DOI lookups contact their public data services.</p><label class="checkbox-row"><input id="deviceSave" type="checkbox"><span>Save draft on this device (avoid on shared computers)</span></label><button id="restoreDeviceDraft" class="secondary" hidden>Restore device draft</button></div></aside><main><div class="page-heading"><div><p class="eyebrow" id="stepEyebrow">STEP 01 / 05</p><h2 id="stepTitle">Details & request</h2><p id="stepDescription">Start with your details and the allowance you would like to request.</p></div><span id="applicationStatus" class="badge">Draft</span></div><div id="message" class="message" role="status" hidden></div><div class="prototype-note">Based on the existing 2026/27 application form. Allowance values and evidence periods are carried over from that prototype.</div>
+        <section id="apply" class="panel step-panel" data-step="1">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Applicant details</p>
+              <h3>Request and eligibility</h3>
+            </div>
+            <span class="badge">Step 1 of 5</span>
+          </div>
+
+          <div class="form-grid">
+            <label>
+              Name
+              <input id="name" data-applicant="name" autocomplete="name" required placeholder="Your full name" />
+            </label>
+            <label>
+              School
+              <select id="school" data-applicant="school" required>
+                <option value="">Select school</option>
+                <option>Accounting and Finance</option>
+                <option>Applied Management</option>
+                <option>Economics and Society</option>
+                <option>Management and Marketing</option>
+              </select>
+            </label>
+            <label>
+              Fractional status
+              <input id="fte" data-applicant="fte" type="number" min="0.01" max="1" step="0.01" required placeholder="e.g. 1.0" />
+            </label>
+            <label>
+              Research centre/group
+              <select id="centre" data-applicant="centre">
+                <option value="">Select centre or group</option>
+                <optgroup label="Research centres">
+                  <option>Centre for Digital Enterprise</option>
+                  <option>Centre for Sustainable Economies</option>
+                  <option>Centre for Work and Organisations</option>
+                </optgroup>
+                <optgroup label="Research groups">
+                  <option>Innovation and Entrepreneurship Group</option>
+                  <option>Public Policy and Communities Group</option>
+                  <option>Responsible Finance Research Group</option>
+                </optgroup>
+                <option>Not affiliated</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="form-grid"><label>University email<input id="email" data-applicant="email" type="email" required autocomplete="email" placeholder="you@westminster.ac.uk"></label><label>Academic year<input id="academicYear" data-applicant="academicYear" required placeholder="2026/27"></label><label>ORCID iD (optional)<input id="applicantOrcid" data-applicant="orcid" placeholder="0000-0002-2559-0567"></label></div>
+          <div class="choice-band">
+            <div>
+              <p class="eyebrow">Main allowance</p>
+              <div class="segmented" id="mainAllowance"></div>
+            </div>
+            <div class="summary-card">
+              <span>Total hours requested</span>
+              <strong id="totalHours">0</strong>
+              <small id="fundingSummary">No funding selected</small>
+            </div>
+          </div>
+
+          <div id="ecrYearRow" class="form-grid" hidden>
+            <label>
+              ECR development year
+              <select id="ecrYear" data-applicant="ecrYear">
+                <option value="">Not applying as ECR</option>
+                <option value="1">ECR1 - first year as ECR</option>
+                <option value="2">ECR2 - second year as ECR</option>
+                <option value="3">ECR3 - third year as ECR</option>
+                <option value="4">ECR4 - fourth year as ECR</option>
+                <option value="5">ECR5 - fifth year as ECR</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="form-grid three">
+            <label>
+              PI bid allowance
+              <select id="piBid">
+                <option value="0">None</option>
+                <option value="30">Grants up to £250k: 30 hours</option>
+                <option value="75">Grants over £250k: 75 hours</option>
+                <option value="120">Grants over £1m: 120 hours</option>
+              </select>
+            </label>
+            <label>
+              CI bid allowance
+              <select id="ciBid">
+                <option value="0">None</option>
+                <option value="30">Grants over £250k: 30 hours</option>
+                <option value="75">Grants over £1m: 75 hours</option>
+              </select>
+            </label>
+            <label class="checkbox-row">
+              <input id="rrAward" type="checkbox" />
+              4* revise and resubmit: 30 hours
+            </label>
+          </div>
+
+          <p id="bidHoursSummary" class="status" aria-live="polite"></p>
+
+          <label>
+            Mitigating circumstances
+            <textarea data-answer="mitigation" id="mitigation" rows="4" placeholder="Optional; include only information you wish to share in your application file"></textarea>
+          </label>
+        </section><section id="publications" class="panel step-panel" data-step="2" hidden><div class="section-heading"><div><p class="eyebrow">PUBLICATIONS SINCE JANUARY 2022</p><h3>Your publication evidence</h3><p class="section-help">Import your works, then choose those you want to include. You can also add a DOI or enter a reference yourself.</p></div><span id="publicationCount" class="badge">0 included</span></div><div class="import-tools"><div class="tool-tabs" role="tablist" aria-label="Import publications"><button role="tab" aria-selected="true" id="orcidTab" aria-controls="orcidTool" data-tool="orcid">ORCID iD</button><button role="tab" aria-selected="false" tabindex="-1" id="bibTab" aria-controls="bibTool" data-tool="bib">BibTeX file</button><button role="tab" aria-selected="false" tabindex="-1" id="doiTab" aria-controls="doiTool" data-tool="doi">Single DOI</button></div><div id="orcidTool" role="tabpanel" aria-labelledby="orcidTab"><label for="orcidInput">ORCID iD or profile URL</label><div class="input-action"><input id="orcidInput" placeholder="0000-0002-2559-0567"><button id="loadOrcid" class="primary">Find publications</button></div><p class="help">Reads public works from ORCID and completes DOI details through Crossref.</p></div><div id="bibTool" role="tabpanel" aria-labelledby="bibTab" hidden><label for="bibFile">Choose a .bib bibliography file</label><input id="bibFile" type="file" accept=".bib,application/x-bibtex"><p class="help">Up to 5 MB. The file is processed locally in your browser.</p></div><div id="doiTool" role="tabpanel" aria-labelledby="doiTab" hidden><label for="doiInput">Publication DOI</label><div class="input-action"><input id="doiInput" placeholder="10.1007/s10796-023-10452-z"><button id="loadDoi" class="primary">Look up DOI</button></div></div><p id="importStatus" role="status" class="status"></p></div><div id="importResults" class="import-results" hidden><div class="section-heading compact"><h4 id="importHeading">Choose publications to include</h4><button id="closeImport" class="text-button">Close import</button></div><div class="import-filters"><label>Search<input id="importSearch" type="search" placeholder="Title or author"></label><label>From year<input id="importFrom" type="number" min="1900" max="2100" value="2022"></label><label>To year<input id="importTo" type="number" min="1900" max="2100" placeholder="Any"></label></div><label class="checkbox-row"><input type="checkbox" id="importAll">Select visible publications</label><div id="importList"></div><div class="import-footer"><span id="importSelected">0 selected</span><button class="primary" id="addImported">Add selected publications</button></div></div><div class="section-heading compact included-heading"><h4>Included in your application</h4><button id="addManual" class="secondary">+ Add manually</button></div><p class="help">AJG 2024 and SJR scores are matched against the existing supplied datasets. Check the match; a journal rating is not a REF output rating.</p><div id="publicationRows"></div><p id="emptyPublications" class="empty">No publications added yet. Import a list or add a reference manually.</p></section>        <section id="pipeline" class="panel step-panel" data-step="3" hidden>
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Section one continued</p>
+              <h3>Submissions and work in progress</h3>
+            </div>
+          </div>
+
+          <div class="subsection">
+            <div class="section-heading compact">
+              <h4>B. Current submissions under review</h4>
+              <button class="secondary" data-add-row="submissions">Add submission</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Submission details</th>
+                    <th>Journal / publisher</th>
+                    <th>AJG 2024</th>
+                    <th>SJR score</th>
+                    <th>Status</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="submissionsRows"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="subsection">
+            <div class="section-heading compact">
+              <h4>C. Work in progress</h4>
+              <button class="secondary" data-add-row="workInProgress">Add project</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Research project</th>
+                    <th>Publication plans</th>
+                    <th>Target journal</th>
+                    <th>AJG 2024</th>
+                    <th>SJR score</th>
+                    <th>Ethics application</th>
+                    <th>Target date</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="workInProgressRows"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>        <section id="evidence" class="panel step-panel" data-step="3" hidden>
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Sections two to five</p>
+              <h3>REF, income, supervision, and conferences</h3>
+            </div>
+          </div>
+
+          <div class="subsection">
+            <div class="section-heading compact">
+              <h4>REF output readiness since Jan 2021</h4>
+              <button class="secondary" data-add-row="refOutputs">Add REF output</button>
+            </div>
+            <div class="ref-publication-picker">
+              <label for="refPublication">Publication</label>
+              <select id="refPublication"></select>
+              <button type="button" id="addRefPublication" class="secondary" disabled>Add selected publication</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Reference</th>
+                    <th>REF rating</th>
+                    <th>Open access / VRE</th>
+                    <th>AJG</th>
+                    <th>SJR</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="refOutputsRows"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="subsection">
+            <div class="section-heading compact">
+              <h4>Research and knowledge exchange income since Jan 2022</h4>
+              <button class="secondary" data-add-row="income">Add funding application</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>VRE URL</th>
+                    <th>Name</th>
+                    <th>Year</th>
+                    <th>Total value</th>
+                    <th>Role</th>
+                    <th>Outcome</th>
+                    <th>Ethics</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="incomeRows"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="form-grid">
+            <label>
+              PhD completions and supervision since Jan 2022
+              <textarea data-answer="phdSupervision" id="phdSupervision" rows="7" placeholder="Paste VRE doctoral supervision record here"></textarea>
+            </label>
+            <div class="subsection inline-table">
+              <div class="section-heading compact">
+                <h4>ECR conference attendance</h4>
+                <button class="secondary" data-add-row="conferences">Add conference</button>
+              </div>
+              <div class="table-wrap compact-table">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Project</th>
+                      <th>Paper / event</th>
+                      <th>Conference</th>
+                      <th>Publication</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody id="conferencesRows"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>        <section id="plans" class="panel step-panel" data-step="4" hidden>
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Sections six, seven, and nine</p>
+              <h3>Future plans, culture, esteem, and impact</h3>
+            </div>
+          </div>
+
+          <label>
+            Current and future research and knowledge exchange plans
+            <textarea data-answer="futurePlans" id="futurePlans" rows="7" placeholder="For ECR and 250-hour applicants: projects, role, bids, data collection, dissemination, events"></textarea>
+          </label>
+
+          <div class="subsection">
+            <div class="section-heading compact">
+              <h4>Research culture, activities, and esteem since Jan 2022</h4>
+              <button class="secondary" data-add-row="culture">Add activity</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Category</th>
+                    <th>Activity</th>
+                    <th>VRE entry</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="cultureRows"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <label>
+            Contribution to impact
+            <textarea data-answer="impact" id="impact" rows="7" placeholder="For 350 and 425-hour applicants: effect, change, or benefit beyond academia"></textarea>
+          </label>
+        </section><section class="panel step-panel" data-step="5" hidden><div class="section-heading"><div><p class="eyebrow">CHECK BEFORE YOU SAVE</p><h3>Your application at a glance</h3></div></div><div id="reviewSummary"></div><div id="validationErrors" role="alert" class="validation-errors" hidden></div><label class="checkbox-row declaration"><input id="declaration" type="checkbox"><span>I have checked this application and the publications included, and confirm that the information is accurate to the best of my knowledge.</span></label><div class="export-box"><h4>Keep your application as a file</h4><p>Download the Excel workbook to upload through your university process. Save a JSON copy using the top button to reopen and edit later.</p><div class="export-buttons"><button id="finish" class="primary">Finish & download Excel ↓</button><button id="exportCsv" class="secondary">Export CSV for spreadsheet ↓</button><button id="print" class="secondary">Print / save PDF</button></div><p class="help">Finishing marks your downloaded application “Ready for review”. It does not submit it to the university or lock your draft.</p><div id="fileReceipt" hidden role="status"></div></div></section><div class="step-footer"><button id="back" class="secondary">← Back</button><span>Files stay with you · <button id="newApplication" class="text-button">Start a new application</button></span><button id="next" class="primary">Continue →</button></div><footer>Research Support Allowance · Applicant prototype <a href="./credits.html">Data & credits</a></footer></main></div><datalist id="journalNames"></datalist><script src="./rankings-data.js"></script><script type="module" src="./app.js"></script></body></html>

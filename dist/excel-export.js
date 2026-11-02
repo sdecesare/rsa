@@ -1,0 +1,18 @@
+import ExcelJS from './vendor/exceljs.js';
+import {configs,totals} from './model.js';
+// Split long values instead of silently losing text at Excel's cell limit.
+export function parts(value){let text=Array.isArray(value)?value.join('\n'):value??'';if(typeof text!=='string')return [text];const out=[];do{let n=32000;if(text.charCodeAt(n-1)>=0xD800&&text.charCodeAt(n-1)<=0xDBFF)n--;out.push(text.slice(0,n));text=text.slice(n);}while(text.length);return out;}
+export async function applicationWorkbook(app){
+ const book=new ExcelJS.Workbook();book.creator='Research Support Allowance';book.created=new Date(app.createdAt);book.modified=new Date(app.updatedAt);
+ function sheet(name,columns,records){const ws=book.addWorksheet(name,{views:[{state:'frozen',ySplit:1}]});ws.columns=columns.map(([key,header,width])=>({key,header,width:width||28}));for(const record of records){const chunks=columns.map(([key])=>parts(record[key]));const count=Math.max(...chunks.map(x=>x.length));for(let i=0;i<count;i++){const row=ws.addRow(Object.fromEntries(columns.map(([key],j)=>[key,key==='part'?`${i+1}/${count}`:chunks[j][i]??(chunks[j].length===1?chunks[j][0]:'')])));row.alignment={vertical:'top',wrapText:true};row.height= Math.min(120,Math.max(32,18*Math.max(...row.values.map(v=>Math.ceil(String(v??'').length/55)))));}}ws.getRow(1).font={bold:true,color:{argb:'FFFFFFFF'}};ws.getRow(1).fill={type:'pattern',pattern:'solid',fgColor:{argb:'FF164F43'}};ws.getRow(1).height=32;ws.autoFilter={from:{row:1,column:1},to:{row:Math.max(1,ws.rowCount),column:columns.length}};ws.pageSetup={orientation:'landscape',fitToPage:true,fitToWidth:1,fitToHeight:0};return ws;}
+ const t=totals(app);const summary={Application_ID:app.id,Status:app.status,Created:app.createdAt,Updated:app.updatedAt,Finalized:app.finalizedAt??'',...app.applicant,...app.request,...t,Declaration:app.declaration?'Confirmed':'Not confirmed',Instructions:'Upload this Excel file through your university process. This app has not submitted the application. Keep a separate JSON copy to reopen and edit.'};
+ sheet('Application',[['field','Field',34],['value','Value',90],['part','Text part',12]],Object.entries(summary).map(([field,value])=>({field,value})));
+ const common=[['applicationId','Application ID',38],['id','Record ID',38],['part','Text part',12]];
+ const pubFields=[['apa','APA reference',95],['type','Type'],['title','Title',70],['journal','Journal',45],['year','Year',12],['doi','DOI',38],['vreUrl','Repository URL',45],['ajg','AJG 2024',14],['sjr','SJR score',14],['sjrQuartile','SJR quartile',14],['rankingMatch','Ranking match'],['source','Source'],['issues','Details to check',60],['issns','ISSNs']];
+ sheet('Publications',[...common,...pubFields],app.publications.map(p=>({...p,applicationId:app.id})));
+ const names={submissions:'Submissions',workInProgress:'Work in progress',refOutputs:'REF outputs',income:'Income and bids',conferences:'Conferences',culture:'Culture and esteem'};
+ for(const [key,c] of Object.entries(configs))sheet(names[key],[...common,...c.fields.map(([field,label])=>[field,label,['textarea','journal'].includes(c.fields.find(f=>f[0]===field)[2])?65:28]),...(key==='refOutputs'?[['publicationId','Linked publication ID',38]]:[])],app[key].map(r=>({...r,applicationId:app.id})));
+ const labels={mitigation:'Mitigating circumstances',phdSupervision:'PhD completions and supervision',futurePlans:'Research and knowledge exchange plans',impact:'Contribution to impact'};
+ sheet('Statements',[['applicationId','Application ID',38],['section','Section',42],['text','Statement',110],['part','Text part',12]],Object.entries(app.answers).map(([key,text])=>({applicationId:app.id,section:labels[key]||key,text})));
+ return book.xlsx.writeBuffer();
+}
